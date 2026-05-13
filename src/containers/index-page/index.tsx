@@ -18,11 +18,6 @@ const HomePage: React.FC = () => {
     return () => clearInterval(timer);
   }, []);
 
-  // 计算当前年龄
-  const calculateAge = (): number => {
-    return currentTime.diff(birthday, "year");
-  };
-
   // 计算距离下一次生日的天数
   const getDaysUntilNextBirthday = (): number => {
     const today = currentTime;
@@ -36,7 +31,6 @@ const HomePage: React.FC = () => {
     return nextBirthday.diff(today, "day");
   };
 
-  const age = calculateAge();
   const daysUntilBirthday = getDaysUntilNextBirthday();
   const isBirthdayToday = daysUntilBirthday === 0;
 
