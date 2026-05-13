@@ -32,6 +32,8 @@ const PuzzleGame: React.FC<Props> = ({ difficulty, onChangeDifficulty }) => {
   const [imageLoaded, setImageLoaded] = useState(false);
   const [showCheatModal, setShowCheatModal] = useState(false);
   const [cheatReward, setCheatReward] = useState<string | null>(null);
+  const [cheatClickCount, setCheatClickCount] = useState(0); // 点击次数
+  const [showCheatButton, setShowCheatButton] = useState(false); // 是否显示完整按钮
 
   const timerRef = useRef<any>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -83,6 +85,8 @@ const PuzzleGame: React.FC<Props> = ({ difficulty, onChangeDifficulty }) => {
     setIsWin(false);
     setGameStarted(true);
     setCheatReward(null);
+    setCheatClickCount(0); // 重置点击次数
+    setShowCheatButton(false); // 重置按钮显示状态
 
     if (timerRef.current) {
       clearInterval(timerRef.current);
@@ -151,6 +155,26 @@ const PuzzleGame: React.FC<Props> = ({ difficulty, onChangeDifficulty }) => {
   // 重新开始
   const handleRestart = () => {
     initGame();
+  };
+  // 点击🙋‍♂️图标
+  const handleCheatIconClick = () => {
+    const newCount = cheatClickCount + 1;
+    setCheatClickCount(newCount);
+
+    // 显示点击反馈
+    setCheatReward(`🙋‍♂️ 亲亲 ${5 - newCount} 次召唤作弊按钮`);
+    setTimeout(() => {
+      setCheatReward(null);
+    }, 1000);
+
+    // 达到5次后显示完整按钮
+    if (newCount >= 5) {
+      setShowCheatButton(true);
+      setCheatReward("🎉 作弊按钮已解锁！可以开始作弊咯！ 🎉");
+      setTimeout(() => {
+        setCheatReward(null);
+      }, 2000);
+    }
   };
 
   // 作弊功能
@@ -246,9 +270,22 @@ const PuzzleGame: React.FC<Props> = ({ difficulty, onChangeDifficulty }) => {
             </div>
           </div>
           <div className="controls">
-            <button className="btn-cheat" onClick={handleCheat}>
-              🙋‍♂️ 报告！我要作弊
-            </button>
+            {!showCheatButton ? (
+              <button
+                className="btn-cheat-icon"
+                onClick={handleCheatIconClick}
+                title={`点击${5 - cheatClickCount}次解锁作弊`}
+              >
+                🙋‍♂️
+                {cheatClickCount > 0 && (
+                  <span className="cheat-count">{cheatClickCount}/5</span>
+                )}
+              </button>
+            ) : (
+              <button className="btn-cheat" onClick={handleCheat}>
+                🙋‍♂️ 报告！我要作弊
+              </button>
+            )}
             <button className="btn-restart" onClick={handleRestart}>
               🔄 重新开始
             </button>
