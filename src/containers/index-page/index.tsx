@@ -7,8 +7,6 @@ const HomePage: React.FC = () => {
   const navigate = useNavigate();
   const [currentTime, setCurrentTime] = useState(dayjs());
 
-  // 生日配置 (1999年10月6日)
-  const birthday = dayjs("1999-6-10");
   const birthDateStr = "1999年6月10日";
 
   useEffect(() => {
