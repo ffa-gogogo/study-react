@@ -130,6 +130,143 @@
   font-size: 14px;
   margin: 0;
 }
+.btn-cheat {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: all 0.3s ease;
+}
+.btn-cheat:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 5px 15px rgba(245, 87, 108, 0.4);
+}
+.btn-cheat:active {
+  transform: translateY(0);
+}
+.cheat-reward {
+  position: fixed;
+  top: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 24px;
+  border-radius: 50px;
+  font-size: 14px;
+  font-weight: bold;
+  z-index: 100;
+  animation: slideDown 0.3s ease-out;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+.cheat-modal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: rgba(0, 0, 0, 0.7);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  animation: fadeIn 0.3s ease-out;
+}
+.cheat-modal {
+  background: white;
+  border-radius: 20px;
+  padding: 30px;
+  text-align: center;
+  max-width: 350px;
+  animation: scaleIn 0.3s ease-out;
+  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+}
+.cheat-modal .cheat-modal-icon {
+  font-size: 60px;
+  margin-bottom: 15px;
+  animation: bounce 0.5s ease-out;
+}
+.cheat-modal .cheat-modal-title {
+  font-size: 24px;
+  color: #333;
+  margin-bottom: 10px;
+}
+.cheat-modal .cheat-modal-text {
+  color: #666;
+  line-height: 1.6;
+  margin-bottom: 20px;
+}
+.cheat-modal .cheat-modal-text .cheat-modal-reward {
+  display: inline-block;
+  margin-top: 8px;
+  padding: 4px 12px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 20px;
+  font-size: 12px;
+}
+.cheat-modal .cheat-modal-buttons {
+  display: flex;
+  gap: 15px;
+  justify-content: center;
+}
+.cheat-modal .cheat-modal-buttons button {
+  padding: 10px 24px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: all 0.3s ease;
+}
+.cheat-modal .cheat-modal-buttons button:hover {
+  transform: translateY(-2px);
+}
+.cheat-modal .cheat-modal-buttons button:active {
+  transform: translateY(0);
+}
+.cheat-modal .cheat-modal-buttons .cheat-modal-confirm {
+  background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+  color: white;
+}
+.cheat-modal .cheat-modal-buttons .cheat-modal-cancel {
+  background: #f0f0f0;
+  color: #666;
+}
+.cheat-modal .cheat-modal-buttons .cheat-modal-cancel:hover {
+  background: #e0e0e0;
+}
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.9);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+@keyframes bounce {
+  0%,
+  100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+@keyframes slideDown {
+  from {
+    opacity: 0;
+    transform: translateX(-50%) translateY(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+  }
+}
 @keyframes spin {
   to {
     transform: rotate(360deg);

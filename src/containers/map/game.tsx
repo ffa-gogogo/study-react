@@ -18,8 +18,8 @@ interface Props {
 }
 
 const LOCAL_IMAGES = {
-  3: img1Url, // 3x3 使用 img1
-  4: img2Url // 4x4 使用 img2
+  3: img1Url,
+  4: img2Url
 };
 
 const PuzzleGame: React.FC<Props> = ({ difficulty, onChangeDifficulty }) => {
@@ -30,6 +30,8 @@ const PuzzleGame: React.FC<Props> = ({ difficulty, onChangeDifficulty }) => {
   const [isWin, setIsWin] = useState(false);
   const [imageUrls, setImageUrls] = useState<string[]>([]);
   const [imageLoaded, setImageLoaded] = useState(false);
+  const [showCheatModal, setShowCheatModal] = useState(false);
+  const [cheatReward, setCheatReward] = useState<string | null>(null);
 
   const timerRef = useRef<any>(null);
   const imgRef = useRef<HTMLImageElement | null>(null);
@@ -80,6 +82,7 @@ const PuzzleGame: React.FC<Props> = ({ difficulty, onChangeDifficulty }) => {
     setTime(0);
     setIsWin(false);
     setGameStarted(true);
+    setCheatReward(null);
 
     if (timerRef.current) {
       clearInterval(timerRef.current);
@@ -150,6 +153,50 @@ const PuzzleGame: React.FC<Props> = ({ difficulty, onChangeDifficulty }) => {
     initGame();
   };
 
+  // 作弊功能
+  const handleCheat = () => {
+    if (isWin) {
+      setCheatReward("🎉 已经赢了！别再作弊啦~");
+      setTimeout(() => setCheatReward(null), 2000);
+      return;
+    }
+    setShowCheatModal(true);
+  };
+
+  // 一键通关：直接完成拼图
+  const completePuzzle = () => {
+    // 直接生成正确顺序的拼图
+    const total = difficulty * difficulty;
+    const correctPieces: PuzzlePiece[] = [];
+
+    for (let i = 0; i < total; i++) {
+      correctPieces.push({
+        id: i,
+        currentPos: i,
+        correctPos: i,
+        isBlank: i === total - 1
+      });
+    }
+
+    setPieces(correctPieces);
+    setCheatReward("😘 收到亲亲！作弊成功！拼图已完成，通关啦！🎉");
+
+    setTimeout(() => {
+      setCheatReward(null);
+    }, 3000);
+  };
+
+  // 确认作弊（亲一口奖励）
+  const confirmCheat = () => {
+    setShowCheatModal(false);
+    completePuzzle(); // 直接通关
+  };
+
+  // 取消作弊
+  const cancelCheat = () => {
+    setShowCheatModal(false);
+  };
+
   // 获取拼图块的背景样式
   const getPieceStyle = (piece: PuzzlePiece) => {
     if (piece.isBlank) {
@@ -161,7 +208,6 @@ const PuzzleGame: React.FC<Props> = ({ difficulty, onChangeDifficulty }) => {
       return { background: "#667eea" };
     }
 
-    // 对于裁剪好的独立图片，直接显示完整图片
     return {
       backgroundImage: `url(${imgUrl})`,
       backgroundSize: "cover",
@@ -200,6 +246,9 @@ const PuzzleGame: React.FC<Props> = ({ difficulty, onChangeDifficulty }) => {
             </div>
           </div>
           <div className="controls">
+            <button className="btn-cheat" onClick={handleCheat}>
+              🙋‍♂️ 报告！我要作弊
+            </button>
             <button className="btn-restart" onClick={handleRestart}>
               🔄 重新开始
             </button>
@@ -208,6 +257,8 @@ const PuzzleGame: React.FC<Props> = ({ difficulty, onChangeDifficulty }) => {
             </button>
           </div>
         </div>
+
+        {cheatReward && <div className="cheat-reward">{cheatReward}</div>}
 
         <div
           className="puzzle-grid"
@@ -233,6 +284,29 @@ const PuzzleGame: React.FC<Props> = ({ difficulty, onChangeDifficulty }) => {
           <p className="tip">💡 提示：点击相邻的拼图块进行移动</p>
         </div>
       </div>
+
+      {/* 作弊弹窗 */}
+      {showCheatModal && (
+        <div className="cheat-modal-overlay" onClick={cancelCheat}>
+          <div className="cheat-modal" onClick={(e) => e.stopPropagation()}>
+            <div className="cheat-modal-icon">😘</div>
+            <h3 className="cheat-modal-title">想要作弊？</h3>
+            <p className="cheat-modal-text">
+              抽牌5张做完全部惩罚，才能帮你通关！
+              <br />
+              <span className="cheat-modal-reward">🎁 奖励：一键完成拼图</span>
+            </p>
+            <div className="cheat-modal-buttons">
+              <button className="cheat-modal-confirm" onClick={confirmCheat}>
+                💋 我要作弊！
+              </button>
+              <button className="cheat-modal-cancel" onClick={cancelCheat}>
+                姐是高智商
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
 
       <VictoryModal
         isOpen={isWin}
