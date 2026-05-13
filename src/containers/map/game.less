@@ -1,0 +1,183 @@
+.puzzle-game {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  padding: 20px;
+  
+  &.loading {
+    flex-direction: column;
+    gap: 20px;
+    
+    .loader {
+      width: 50px;
+      height: 50px;
+      border: 3px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+    }
+    
+    p {
+      color: white;
+      font-size: 18px;
+    }
+  }
+  
+  .game-container {
+    background: rgba(255, 255, 255, 0.95);
+    border-radius: 20px;
+    padding: 30px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+    animation: slideIn 0.5s ease-out;
+    
+    .game-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+      flex-wrap: wrap;
+      gap: 15px;
+      
+      .stats {
+        display: flex;
+        gap: 30px;
+        
+        .stat {
+          text-align: center;
+          
+          .stat-label {
+            display: block;
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 5px;
+          }
+          
+          .stat-value {
+            display: block;
+            font-size: 28px;
+            font-weight: bold;
+            color: #667eea;
+          }
+        }
+      }
+      
+      .controls {
+        display: flex;
+        gap: 10px;
+        
+        button {
+          padding: 10px 20px;
+          border: none;
+          border-radius: 8px;
+          cursor: pointer;
+          font-size: 14px;
+          transition: all 0.3s ease;
+          
+          &:hover {
+            transform: translateY(-2px);
+          }
+          
+          &:active {
+            transform: translateY(0);
+          }
+        }
+        
+        .btn-restart {
+          background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+          color: white;
+        }
+        
+        .btn-change {
+          background: #f0f0f0;
+          color: #333;
+          
+          &:hover {
+            background: #e0e0e0;
+          }
+        }
+      }
+    }
+    
+    .puzzle-grid {
+      display: grid;
+      gap: 2px;
+      background: #333;
+      border: 2px solid #333;
+      border-radius: 8px;
+      overflow: hidden;
+      margin: 20px 0;
+      
+      .puzzle-piece {
+        background-size: cover;
+        background-repeat: no-repeat;
+        background-color: #4a5568;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        position: relative;
+        
+        &:not(.blank):hover {
+          transform: scale(0.98);
+          filter: brightness(1.05);
+        }
+        
+        &.blank {
+          background: #2d3748;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          
+          .blank-icon {
+            font-size: 40px;
+            opacity: 0.5;
+          }
+          
+          &:hover {
+            background: #374151;
+          }
+        }
+        
+        &.win {
+          animation: winPulse 0.5s ease-out;
+        }
+      }
+    }
+    
+    .game-info {
+      text-align: center;
+      
+      .tip {
+        color: #666;
+        font-size: 14px;
+        margin: 0;
+      }
+    }
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes slideIn {
+  from {
+    opacity: 0;
+    transform: translateY(50px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes winPulse {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.02);
+  }
+}
